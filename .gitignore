@@ -1,0 +1,5 @@
+bin/
+obj/
+*.deb/
+pr1_1.0/
+usr/local/bin/*
