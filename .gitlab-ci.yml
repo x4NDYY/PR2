@@ -1,0 +1,40 @@
+image: mcr.microsoft.com/dotnet/sdk:8.0
+
+stages:
+  - build
+  - test
+  - package
+
+build:
+  stage: build
+  script:
+    - cd src
+    - make
+  artifacts:
+    paths:
+      - src/bin/
+
+test:
+  stage: test
+  script:
+    - echo "Running basic test..."
+    - ./src/bin/Release/net8.0/linux-x64/publish/PR1
+  dependencies:
+    - build
+
+package:
+  stage: package
+  script:
+    - apt update
+    - apt install -y dpkg-dev
+    - mkdir -p build/usr/local/bin
+    - mkdir -p build/DEBIAN
+    - cp src/bin/Release/net8.0/linux-x64/publish/PR1 build/usr/local/bin/
+    - chmod 755 build/usr/local/bin/PR1
+    - cp DEBIAN/control build/DEBIAN/
+    - dpkg-deb --build build pr1_1.0.deb
+  artifacts:
+    paths:
+      - pr1_1.0.deb
+  dependencies:
+    - build
