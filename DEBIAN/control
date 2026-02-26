@@ -1,0 +1,7 @@
+Package: pr1
+Version: 1.0
+Section: base
+Priority: optional
+Architecture: amd64
+Maintainer: x4NDYY
+Description: PR1 console application
