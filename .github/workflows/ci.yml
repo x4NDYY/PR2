@@ -21,11 +21,11 @@ jobs:
       - name: Build project
         run: |
           cd src
-          make
+          dotnet restore
+          dotnet publish -c Release -r linux-x64 --self-contained true
 
       - name: Run test
-        run: |
-          ./src/bin/Release/net8.0/linux-x64/publish/PR1
+        run: ./src/bin/Release/net8.0/linux-x64/publish/PR1
 
       - name: Install dpkg
         run: sudo apt update && sudo apt install -y dpkg-dev
