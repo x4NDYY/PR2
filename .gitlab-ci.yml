@@ -7,6 +7,8 @@ stages:
 
 build:
   stage: build
+  tags:
+    - local
   script:
     - cd src
     - make
@@ -16,6 +18,8 @@ build:
 
 test:
   stage: test
+  tags:
+    - local
   script:
     - echo "Running basic test..."
     - ./src/bin/Release/net8.0/linux-x64/publish/PR1
@@ -24,6 +28,8 @@ test:
 
 package:
   stage: package
+  tags:
+    - local
   script:
     - apt update
     - apt install -y dpkg-dev
