@@ -1,0 +1,46 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build project
+        run: |
+          cd src
+          make
+
+      - name: Run test
+        run: |
+          ./src/bin/Release/net8.0/linux-x64/publish/PR1
+
+      - name: Install dpkg
+        run: sudo apt update && sudo apt install -y dpkg-dev
+
+      - name: Build deb package
+        run: |
+          mkdir -p build/usr/local/bin
+          mkdir -p build/DEBIAN
+          cp src/bin/Release/net8.0/linux-x64/publish/PR1 build/usr/local/bin/
+          chmod 755 build/usr/local/bin/PR1
+          cp DEBIAN/control build/DEBIAN/
+          dpkg-deb --build build pr1_1.0.deb
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-package
+          path: pr1_1.0.deb
