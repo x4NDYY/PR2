@@ -2,15 +2,35 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
-  build-test-package:
-    runs-on: ubuntu-latest
 
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build project
+        run: |
+          cd src
+          dotnet restore
+          dotnet publish -c Release -r linux-x64 --self-contained true
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -25,10 +45,30 @@ jobs:
           dotnet publish -c Release -r linux-x64 --self-contained true
 
       - name: Run test
-        run: ./src/bin/Release/net8.0/linux-x64/publish/PR1
+        run: |
+          chmod +x src/bin/Release/net8.0/linux-x64/publish/PR1
+          ./src/bin/Release/net8.0/linux-x64/publish/PR1
+
+  package:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+    
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build project
+        run: |
+          cd src
+          dotnet restore
+          dotnet publish -c Release -r linux-x64 --self-contained true
 
       - name: Install dpkg
-        run: sudo apt update && sudo apt install -y dpkg-dev
+        run: sudo apt update && sudo apt install -y dpkg
 
       - name: Build deb package
         run: |
