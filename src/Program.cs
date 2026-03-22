@@ -20,24 +20,30 @@ class Program
             return;
         }
 
+        string result = ReplaceSpacesWithMostFrequent(input);
+        Console.WriteLine(result);
+    }
+
+    static string ReplaceSpacesWithMostFrequent(string input)
+    {
         char symbol = '\0';
         int maxCountSymbol = 0;
 
-        for(int i = 0; i < input.Length; i++)
+        for (int i = 0; i < input.Length; i++)
         {
             char current = input[i];
             int count = 0;
 
-            if(current == ' ' )
+            if (current == ' ')
                 continue;
 
-            for(int j = 0; j < input.Length; j++)
+            for (int j = 0; j < input.Length; j++)
             {
                 if (input[j] == current)
                     count++;
             }
 
-            if(maxCountSymbol < count)
+            if (maxCountSymbol < count)
             {
                 maxCountSymbol = count;
                 symbol = current;
@@ -46,12 +52,9 @@ class Program
 
         if (symbol == '\0')
         {
-            Console.WriteLine("В строке только пробелы.");
-            return;
+            return "В строке только пробелы.";
         }
 
-        string result = input.Replace(' ', symbol);
-
-        Console.WriteLine(result);
+        return input.Replace(' ', symbol);
     }
 }
