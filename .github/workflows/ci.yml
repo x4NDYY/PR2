@@ -23,8 +23,7 @@ jobs:
       - name: Build project
         run: |
           cd src
-          dotnet restore
-          dotnet publish -c Release -r linux-x64 --self-contained true
+          make publish
 
   test:
     runs-on: ubuntu-latest
@@ -41,8 +40,7 @@ jobs:
       - name: Build project
         run: |
           cd src
-          dotnet restore
-          dotnet publish -c Release -r linux-x64 --self-contained true
+          make publish
 
       - name: Run test
         run: |
@@ -64,8 +62,7 @@ jobs:
       - name: Build project
         run: |
           cd src
-          dotnet restore
-          dotnet publish -c Release -r linux-x64 --self-contained true
+          make publish
 
       - name: Install dpkg
         run: sudo apt update && sudo apt install -y dpkg
