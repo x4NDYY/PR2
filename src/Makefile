@@ -1,4 +1,4 @@
-APP=PR1
+APP=PR2
 
 check:
 	@which dotnet > /dev/null || (echo "dotnet SDK not installed" && exit 1)

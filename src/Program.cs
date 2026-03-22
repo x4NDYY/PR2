@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-class Program
+public class Program
 {
     static void Main()
     {
@@ -24,7 +24,7 @@ class Program
         Console.WriteLine(result);
     }
 
-    static string ReplaceSpacesWithMostFrequent(string input)
+    public static string ReplaceSpacesWithMostFrequent(string input)
     {
         char symbol = '\0';
         int maxCountSymbol = 0;

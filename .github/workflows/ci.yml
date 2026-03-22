@@ -44,8 +44,8 @@ jobs:
 
       - name: Run test
         run: |
-          chmod +x src/bin/Release/net8.0/linux-x64/publish/PR1
-          ./src/bin/Release/net8.0/linux-x64/publish/PR1
+          cd ./tests
+          dotnet test
 
   package:
     runs-on: ubuntu-latest
