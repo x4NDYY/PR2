@@ -3,8 +3,14 @@ using System.Collections.Generic;
 
 public class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
+        if (args.Length > 0)
+        {
+            Console.WriteLine(ReplaceSpacesWithMostFrequent(args[0]));
+            return;
+        }
+        
         Console.WriteLine("Введите строку (не более 20 символов): ");
         string input = Console.ReadLine();
 
